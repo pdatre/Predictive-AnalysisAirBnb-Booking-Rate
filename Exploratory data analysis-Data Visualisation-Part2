@@ -1,0 +1,127 @@
+```{r}
+#Data Visualisation Part Two :
+#Basic Data Visualisations to understand data better 
+#variables are used from the orginal Kaggle dataset
+#variables contain missing values and/or outliers
+#libraries used ggplotly2
+```
+
+Plot 3 : Pictorial representation of high booking rate against the cleaning fee of Listings
+Plot 4 : Pictorial representation of high booking rate against the price of Listings
+
+
+
+```{r}
+#Plot3
+dffclean<- dff 
+
+#dffclean %>% select(cleaning_fee) %>% head()
+#table(is.na(dffclean$cleaning_fee))  #contains missing values
+#unique(dffroom$room_type)
+
+#boxplot(dffclean$cleaning_fee, main="Cleaning Fee", boxwex=0.1) #cleaning fee has outliers , data visualisation will only make sense after data preprocessing/data cleaning
+
+#Plotting box plot to see the distribution of high_booking_rate variable with cleaning_fee variable
+plotDV3 <- dffclean %>% ggplot() + geom_boxplot(mapping = aes(x = high_booking_rate, y = cleaning_fee, group=high_booking_rate, fill = "#FF6666")) + labs(title="High Booking Rate vs Cleaning Fee", x="High Booking Rate" , y="Cleaning Fee") 
+
+plotDV3
+
+
+```
+
+
+```{r}
+#Plot4
+#price has outliers , data visualisation will only make sense after data preprocessing/data cleaning
+#Plotting box plot to see the distribution of high_booking_rate variable with price variable
+plotDV4 <- dff %>% ggplot() + geom_boxplot(mapping = aes(x = high_booking_rate, y = price, group=high_booking_rate)) + ggtitle("High Booking Rate vs Price")
+plotDV4
+```
+
+
+```{r}
+#Data Visualisation Part Three :
+#Basic Data Visualisations to understand data better 
+#variables are used from the original Kaggle dataset
+#variables are categories
+#libraries used ggplotly2
+```
+
+Plot 5 : Pictorial representation of famous amenities against the count of Listings
+
+```{r}
+dffB <- dff
+
+dffB$amenities <- gsub("[{}]",'',dffB$amenities)
+#dffB %>% select(amenities) %>% head()
+
+dffB$amenities <- gsub('"','',dffB$amenities)
+amenities.string <- paste ( dffB$amenities , collapse = "," )
+
+#table(amenities.string) %>% head()
+```
+
+```{r}
+amenities.vector <- strsplit ( amenities.string , "," )[[1]]
+#table(amenities.vector)
+#cities.vector.clean <- gsub ( " " , "" , cities.vector ) #dont run this, this will remove all whitespaces
+#table ( cities.vector.clean )
+
+```
+
+```{r}
+#plot 5
+#plot(table(amenities.vector))
+myFrame <- as.data.frame(table(amenities.vector))
+#total 152 amenities
+#myFrame %>% arrange(desc(Freq))
+#names(myFrame)
+myFrame1 <- 
+myFrame %>%
+    arrange(desc(Freq)) %>%
+    slice(1:20) 
+
+plotDV5 <- ggplot(myFrame1, aes(x=amenities.vector,y= Freq)) + 
+   geom_bar(stat="identity" ,  fill = "#FF6666") + labs(title="Bar chart of the most famous Amenities", x="Amenities" , y="Frequency") 
+plotDV5 + coord_flip()
+```
+
+```{r}
+#Data Visualisation Part Four :
+#Basic Data Visualisations to understand data better 
+#variables are used from the orginal Kaggle dataset
+#variables contain missing values and are skewed
+#libraries used ggplotly2
+```
+
+The data showed right skewness for the following features : 
+price
+security_deposit
+
+```{r}
+
+#Plot 9 : Pictorial representation of price against the Count of Listings
+
+#plot9
+plot9<-ggplot(dff, aes(x=price)) + 
+  geom_histogram(color="black", fill="pink") +  labs(title="Price Against Listings Count",x="price($)", y = "count")
+plot9
+
+#Plot 10 : Pictorial representation of security deposit against the Count of Listings
+#plot10
+plot10<-ggplot(dff, aes(x=security_deposit)) + 
+  geom_histogram(color="black", fill="pink") +  labs(title="Security Deposit Against Listings Count",x="security deposit($)", y = "count")
+plot10
+
+#Plot 11 : Pictorial representation of log transformed price against the Count of Listings
+#plot11
+plot11<-ggplot(dff, aes(x=log(price))) + 
+  geom_histogram(color="black", fill="pink") +  labs(title="Log-Transformed Price Against Listings Count",x="price($)", y = "count")
+plot11
+
+#Plot 12 : Pictorial representation of log transformed security deposit against the Count of Listings
+#plot12
+plot12<-ggplot(dff, aes(x=log(security_deposit))) + 
+  geom_histogram(color="black", fill="pink") +  labs(title="Log-Transformed Security Deposit Against Listings Count",x="security deposit($)", y = "count")
+plot12
+```
