@@ -1,0 +1,82 @@
+
+```{r}
+##Broad Overview of Train dataframe
+skim(dff)
+#A quick glance at the data shows that there are:
+#Combination of Character, Date, Logical and Numeric Vraiable Types. 
+#Note : Missing values are present and will be dealt ahead. 
+#Total listings : 6195 
+```
+
+
+
+```{r}
+##Broad Overview of Test dataframe
+skim(dft)
+#A quick glance at the data shows that there are:
+#Combination of Character, Date, Logical and Numeric Vraiable Types. 
+#Note : Missing values are present and will be dealt ahead. 
+#Total listings : 2065
+```
+
+**Methodology**
+
+**Exploratory Data Analysis:**
+
+We conducted data visualizations using the whole dataset to understand the main characteristics of some features.
+
+
+```{r}
+#Data Visualisation Part One :
+#Basic Data Visualisations to understand data better 
+#variables are used from the orginal Kaggle dataset
+#variables don't contain missing values
+#libraries used ggplotly2
+```
+
+Plot 1 : Pictorial representation of Top 10 Property Types against the Count of Listings
+Plot 2 : Pictorial representation of Bed Types against the Count of Listings
+
+
+```{r}
+#Plot1
+dffprop <- dff 
+
+#table(is.na(dffprop$property_type))  #no missing values
+proptable <- table(dffprop$property_type)
+#plot(proptable)
+
+myFrame2 <- as.data.frame(proptable)
+#names(myFrame2)
+
+myFrame3 <- 
+myFrame2 %>%
+    arrange(desc(Freq)) %>%
+    slice(1:10) 
+
+
+plotDV1 <- ggplot(myFrame3, aes(x=Var1,y= Freq)) + 
+   geom_bar(stat="identity" ,  fill = "#FF6666") + labs(title="Bar chart of the most famous Property Types", x="Property Type" , y="Frequency") 
+plotDV1 + coord_flip()
+```
+
+
+
+```{r}
+#Plot2
+dffroom <- dff 
+
+#dffroom %>% select(room_type) %>% head()
+#table(is.na(dffroom$room_type))  #no missing values
+#unique(dffroom$room_type)
+
+roomtable <- table(dffroom$room_type)
+
+myFrame4 <- as.data.frame(roomtable)
+#names(myFrame4)
+
+
+plotDV2 <- ggplot(myFrame4, aes(x=Var1,y= Freq)) + 
+   geom_bar(stat="identity" ,  fill = "#FF6666") + labs(title="Bar chart of listings against Room Types", x="Room Type" , y="Frequency") 
+plotDV2 + coord_flip()
+```
