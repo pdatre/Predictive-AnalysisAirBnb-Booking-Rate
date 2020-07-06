@@ -15,6 +15,30 @@ Miami attracts visitors for its countless beaches, tropical weather, and tourist
 
 Although Location is one of the key factors in investing, our project aims at digging deep in the factors involved for the success of an investment. 
 
+There exists 1 Master Script that:
+
+Loads Dataset and Installs and loads required libraries.
+Shows exploratory data analysis.
+Performs data cleaning and data preprocessing.
+Shows model testing.
+Includes the conclusion and summary.
+Writes the new cleaned and joined files to csv (redundant backups).
+
+Guidelines:
+
+Master Script is to be run once per session.
+To check any model, the entire script is to be run.
+
+Instructions for running R Scripts:
+
+Place all data files and r scripts in one folder.
+Open Master.R in RStudio.
+Set the Working Directory to Source File.
+Run Master.R script. 
+Open a script for the regression model desired.
+Library loading commands are redundant if you are in the same session.
+Run script.
+Once run, view plots generated in the plot window.
 
 Data Description :
 In total we had 66 variables.
