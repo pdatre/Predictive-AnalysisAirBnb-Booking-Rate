@@ -1,0 +1,15 @@
+#STEP V
+#CONCLUSION
+
+From Logistic model,  we can see that shared rooms, private rooms and Hotel rooms are important factors in a high booking rate with private rooms and hotel rooms having more significance.
+Looking from the property type aspect we can see that property type townhouse and condo are very important property types  for investors in Miami with important amenities such as beachfront, kitchen , elevator and self check in amenities required to get a high booking rate.
+This was a crucial finding in terms of the business value that these features bring to the model that we have built.
+
+Lessons Learned :
+1.Data Cleaning is more important as opposed to modelling
+2.Understanding variables is better than following the accuracy 
+3.Some values were not easy to work with - Not all values could be replaced with a median
+
+Besides gaining interesting insights into the Miami rental market, we acquired several technical as well as soft skills. Dealing with multiple data formats helped us strengthen our skills in data manipulation and cleaning. For example, we learned new R frameworks & libraries, (particularly gridExtra, Vim) - and others outside the classroom. Working in a team enabled us a chance to learn from each other and the different insights helped to effectively deploy the project. 
+Lastly, it was a great learning experience! And we would like to expand to different cities and analyze trends or compare patterns amongst them.
+-Team 7 signing off 
