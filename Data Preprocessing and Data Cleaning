@@ -1,0 +1,839 @@
+**************************
+#STEP II
+**************************
+
+**Data Preprocessing**
+
+We narrowed down to 21 features to include in our final model, using Forward and Backward selection. The data preprocessing and cleaning performed on those variables are as follows:
+
+1. Type Conversion
+a)Converting these variables from Logical into Numeric values. Working with 0s/1s is easier than working with False/True
+
+```{r}
+#skim(dff$host_is_superhost) 
+#For host_is_superhost variable assign 0 to "False" and 1 to" "True" 1 and then convert it to numeric
+dff$host_is_superhost[which(dff$host_is_superhost=='FALSE')] = 0
+dff$host_is_superhost[which(dff$host_is_superhost=='TRUE')] = 1
+dff$host_is_superhost = as.numeric(dff$host_is_superhost)
+```
+
+```{r}
+#skim(dff$host_has_profile_pic) 
+#For host_has_profile_pic variable assign 0 to "False" and 1 to" "True" 1 and then convert it to numeric
+dff$host_has_profile_pic[which(dff$host_has_profile_pic=='FALSE')] = 0
+dff$host_has_profile_pic[which(dff$host_has_profile_pic=='TRUE')] = 1
+dff$host_has_profile_pic = as.numeric(dff$host_has_profile_pic)
+#skim(host_has_profile_pic) 
+```
+
+```{r}
+#skim(dff$host_identity_verified) 
+#For host_identity_verified variable assign 0 to "False" and 1 to" "True" 1 and then convert it to numeric
+dff$host_identity_verified[which(dff$host_identity_verified=='FALSE')] = 0
+dff$host_identity_verified[which(dff$host_identity_verified=='TRUE')] = 1
+dff$host_identity_verified = as.numeric(dff$host_identity_verified)
+
+#skim(host_identity_verified) 
+```
+
+```{r}
+#skim(dff$is_business_travel_ready ) 
+#For is_business_travel_ready  variable assign 0 to "False" and 1 to "True" 1 and then convert it to numeric
+dff$is_business_travel_ready [which(dff$is_business_travel_ready =='FALSE')] = 0
+dff$is_business_travel_ready [which(dff$is_business_travel_ready =='TRUE')] = 1
+dff$is_business_travel_ready  = as.numeric(dff$is_business_travel_ready )
+
+#skim(is_business_travel_ready ) 
+```
+
+```{r}
+#skim(dff$is_location_exact ) 
+#For is_location_exact  variable assign 0 to "False" and 1 to "True" 1 and then convert it to numeric
+dff$is_location_exact [which(dff$is_location_exact =='FALSE')] = 0
+dff$is_location_exact [which(dff$is_location_exact =='TRUE')] = 1
+dff$is_location_exact  = as.numeric(dff$is_location_exact )
+#skim(is_location_exact ) 
+```
+
+```{r}
+#skim(dff$require_guest_phone_verification ) 
+#For require_guest_phone_verification  variable assign 0 to "False" and 1 to" "True" 1 and then convert it to numeric
+dff$require_guest_phone_verification [which(dff$require_guest_phone_verification =='FALSE')] = 0
+dff$require_guest_phone_verification [which(dff$require_guest_phone_verification =='TRUE')] = 1
+dff$require_guest_phone_verification  = as.numeric(dff$require_guest_phone_verification )
+#skim(require_guest_phone_verification ) 
+```
+
+```{r}
+#skim(dff$require_guest_profile_picture  ) 
+#For require_guest_profile_picture   variable assign 0 to "False" and 1 to" "True" 1 and then convert it to numeric
+dff$require_guest_profile_picture  [which(dff$require_guest_profile_picture  =='FALSE')] = 0
+dff$require_guest_profile_picture  [which(dff$require_guest_profile_picture  =='TRUE')] = 1
+dff$require_guest_profile_picture   = as.numeric(dff$require_guest_profile_picture  )
+#skim(require_guest_profile_picture  ) 
+```
+
+```{r}
+#skim(dff$requires_license) 
+#For requires_license   variable assign 0 to "False" and 1 to" "True" 1 and then convert it to numeric
+dff$requires_license  [which(dff$requires_license  =='FALSE')] = 0
+dff$requires_license  [which(dff$requires_license  =='TRUE')] = 1
+dff$requires_license   = as.numeric(dff$requires_license  )
+#skim(require_guest_profile_picture  ) 
+
+```
+
+```{r}
+#skim(dff$instant_bookable) 
+#For instant_bookable   variable assign 0 to "False" and 1 to" "True" 1 and then convert it to numeric
+dff$instant_bookable  [which(dff$instant_bookable  =='FALSE')] = 0
+dff$instant_bookable  [which(dff$instant_bookable  =='TRUE')] = 1
+dff$instant_bookable   = as.numeric(dff$instant_bookable  )
+#skim(instant_bookable  ) 
+ 
+```
+
+b)Converting Characters into Numeric values
+Performed String Processing to remove Unnecessary Characters
+
+These are converted from character to numeric for statistical/mathematical purpose
+```{r}
+# Data Cleaning
+# Removing $ and other non-numeric characters such as ',' for numeric columns
+dff$price <- gsub('[$]','',dff$price)
+dff$price <- as.numeric(gsub(',','',dff$price))
+
+dff$cleaning_fee <- gsub('[$]','',dff$cleaning_fee)
+dff$cleaning_fee <- as.numeric(gsub(',','',dff$cleaning_fee))
+
+dff$extra_people <- gsub('[$]','',dff$extra_people)
+dff$extra_people <- as.numeric(gsub(',','',dff$extra_people))
+
+dft$extra_people <- gsub('[$]','',dft$extra_people)
+dft$extra_people <- as.numeric(gsub(',','',dft$extra_people))
+
+dff$security_deposit <- gsub('[$]','',dff$security_deposit)
+dff$security_deposit <- as.numeric(gsub(',','',dff$security_deposit))
+
+dft$price <- gsub('[$]','',dft$price)
+dft$price <- as.numeric(gsub(',','',dft$price))
+
+dft$cleaning_fee <- gsub('[$]','',dft$cleaning_fee)
+dft$cleaning_fee <- as.numeric(gsub(',','',dft$cleaning_fee))
+
+dft$security_deposit <- gsub('[$]','',dft$security_deposit)
+dft$security_deposit <- as.numeric(gsub(',','',dft$security_deposit))
+
+```
+
+```{r}
+#Convert the characters into numeric values.
+#For property_type variable, convert 'Apartment' to 1 and rest to 0
+#dff$property_type[which(dff$property_type=='Apartment')] = 2
+#dff$property_type[which(dff$property_type!=1 | dff$property_type!=2 | dff$property_type!=3 | dff$property_type!=4 )] = 0
+#dff$property_type[which(dff$property_type=='House')] = 1
+#dff$property_type[which(dff$property_type=='Condominium')] = 3
+#dff$property_type[which(dff$property_type=='Townhouse')] = 4
+
+# Conversion of property_type in numeric
+#dff$property_type = as.numeric(dff$property_type)
+```
+```{r}
+dff$prop_apt=0
+dff$prop_apt[which(dff$property_type=='Apartment')] = 1
+dff$prop_house=0
+dff$prop_house[which(dff$property_type=='House')] = 1
+dff$prop_condo=0
+dff$prop_condo[which(dff$property_type=='Condominium')] = 1
+dff$prop_town=0
+dff$prop_town[which(dff$property_type=='Townhouse')] = 1
+
+dft$prop_apt=0
+dft$prop_apt[which(dft$property_type=='Apartment')] = 1
+dft$prop_house=0
+dft$prop_house[which(dft$property_type=='House')] = 1
+dft$prop_condo=0
+dft$prop_condo[which(dft$property_type=='Condominium')] = 1
+dft$prop_town=0
+dft$prop_town[which(dft$property_type=='Townhouse')] = 1
+```
+
+```{r}
+# Different factors in cancellation_policy variable such as flexible, moderate, etc are transformed individual columns 
+
+dff$cancellation_policy[which(dff$cancellation_policy=='flexible')] = 1
+
+dff$cancellation_policy[which(dff$cancellation_policy=='moderate')] = 2
+dff$cancellation_policy[which(dff$cancellation_policy=='strict')] = 3
+dff$cancellation_policy[which(dff$cancellation_policy=='super_strict_30')] = 4
+dff$cancellation_policy[which(dff$cancellation_policy=='super_strict_60')] = 4
+dff$cancellation_policy[which(dff$cancellation_policy=="strict_14_with_grace_period")] = 3
+dff$cancellation_policy[which(dff$cancellation_policy=='luxury_moderate')] = 2
+dff$cancellation_policy[which(dff$cancellation_policy=='luxury_super_strict_95')] = 3
+dff$cancellation_policy[which(dff$cancellation_policy=='luxury_super_strict_125')] = 2
+dff$cancellation_policy[which(dff$cancellation_policy=='luxury_no_refund')] = 3
+# Conversion of cancellation_policy in numeric
+
+#as.numeric(as.factor(dff$cancellation_policy))
+
+```
+
+
+```{r}
+
+# Different factors in host_response_time variable such as 'N/A', 'a few days more', etc are transformed individual columns  
+
+dff$host_response_time[which(dff$host_response_time=='a few days or more')] = 1
+dff$host_response_time[which(dff$host_response_time=='N/A')] = 0
+dff$host_response_time[which(dff$host_response_time=='within a day')] = 3
+dff$host_response_time[which(dff$host_response_time=='within a few hours')] = 6
+dff$host_response_time[which(dff$host_response_time=='within an hour')] = 10
+
+# Converting N/A's into 0
+dff$host_response_time[is.na(dff$host_response_time)] = 0
+
+# Conversion of host_response_time in numeric
+
+#as.numeric(as.factor(dff$host_response_time))
+
+#skim(dff$host_response_time)
+
+```
+
+
+c)Converting characters into Factor variable
+ 
+2. Treating Missing Values
+
+The data had missing values for the following features :
+host_is_superhost
+cleaning_fee
+host_listings_count
+security_depsoit
+host_response_rate
+
+```{r}
+#The Train & Test data has null values. To preserve all the information, we imputed the missing rows' null values with the median value of the respective column.
+```
+
+
+```{r}
+
+# Replacing Missing values in the bedrooms column with the median value
+
+dff$bedrooms[which(is.na(dff$bedrooms))] = median(dff$bedrooms,na.rm=T)
+dft$bedrooms[which(is.na(dft$bedrooms))] = median(dft$bedrooms,na.rm=T)
+
+```
+
+
+```{r}
+
+# Replacing Missing values in the bathrooms column with the median value
+
+dff$bathrooms[which(is.na(dff$bathrooms))] = median(dff$bathrooms,na.rm=T)
+dft$bathrooms[which(is.na(dft$bathrooms))] = median(dft$bathrooms,na.rm=T)
+
+```
+
+
+```{r}
+# After checking the data, NA was found indicating missing values
+# Replacing the missing values by median 
+
+dff$host_is_superhost[which(is.na(dff$host_is_superhost))] = median(dff$host_is_superhost,na.rm=T)
+dft$host_is_superhost[which(is.na(dft$host_is_superhost))] = median(dft$host_is_superhost,na.rm=T)
+#skim(dff$host_is_superhost)
+
+```
+
+
+```{r}
+
+# After checking the data, NA was found indicating missing values
+# Replacing the missing values by median 
+
+#class(dff$host_identity_verified)
+dff$host_identity_verified[which(is.na(dff$host_identity_verified))] = median(dff$host_identity_verified,na.rm=T)
+dft$host_identity_verified[which(is.na(dft$host_identity_verified))] = median(dft$host_identity_verified,na.rm=T)
+#skim(dff$host_identity_verified)
+
+```
+
+
+```{r}
+# After checking the data, NA was found indicating missing values 
+
+dff$host_since= as.Date(dff$host_since) 
+dft$host_since= as.Date(dft$host_since) 
+
+```
+
+```{r}
+caseDaydff <- (min(dff$host_since,na.rm = TRUE))
+caseDaydft <- (min(dft$host_since,na.rm = TRUE))
+
+```
+
+
+```{r}
+dff$host_since[which(is.na(dff$host_since))] = caseDaydff
+dft$host_since[which(is.na(dft$host_since))] = caseDaydft
+```
+
+
+```{r}
+# Replacing Missing values in the cleaning_fee column with the median value
+
+dff$cleaning_fee[which(is.na(dff$cleaning_fee))] = median(dff$cleaning_fee,na.rm=T)
+dft$cleaning_fee[which(is.na(dft$cleaning_fee))] = median(dft$cleaning_fee,na.rm=T)
+```
+
+```{r}
+
+# Replacing Missing values in the security_deposit column with the median value
+dff$security_deposit[which(is.na(dff$security_deposit))] = median(dff$security_deposit,na.rm=T)
+dft$security_deposit[which(is.na(dft$security_deposit))] = median(dft$security_deposit,na.rm=T)
+
+```
+
+
+```{r}
+# Replacing Missing values in the beds column with the median value
+dff$beds[which(is.na(dff$beds))] = median(dff$beds,na.rm=T)
+dft$beds[which(is.na(dft$beds))] = median(dft$beds,na.rm=T)
+#warnings()
+
+```
+
+```{r}
+#dealing with missing values of host_listings_counts
+skim(dff$host_listings_count )
+#has 1005 missing values
+class(dff$host_listings_count )
+#it is numeric
+dff$host_listings_count[which(is.na(dff$host_listings_count))] = median(dff$host_listings_count,na.rm=T)
+dft$host_listings_count[which(is.na(dft$host_listings_count))] = median(dft$host_listings_count,na.rm=T)
+
+dff %>% 
+  select(host_listings_count)
+#hist(dff$host_listings_count)
+
+```
+
+3. Treating Categorical Values
+
+We found an interesting feature: amenities, and decided to create dummy variables for all individual amenities.
+For example, if a listing included a wheelchair, the value would be 1, and if the listing did not include a wheelchair, the value would be 0.
+
+```{r}
+# Different factors in amneties variable such as 'Shampoo', 'Kitchen', etc are transformed individual columns 
+
+dff$air = 0
+dff$air[which(grepl("Air conditioning", dff$amenities)==T)] = 1
+
+dff$wifi = 0
+dff$wifi[which(grepl("Wifi", dff$amenities)==T)] = 1 
+
+dff$tv = 0
+dff$tv[which(grepl("TV", dff$amenities)==T)] = 1
+
+dff$essential = 0
+dff$essential[which(grepl("Essentials", dff$amenities)==T)] = 1
+
+dff$Smoke_detector = 0
+dff$Smoke_detector[which(grepl("Smoke detector", dff$amenities)==T)] = 1
+
+dff$Internet = 0
+dff$Internet[which(grepl("Internet", dff$amenities)==T)] = 1
+
+dff$kitchen = 0
+dff$kitchen[which(grepl("Kitchen", dff$amenities)==T)] = 1
+
+dff$hanger = 0
+dff$hanger[which(grepl("Hangers", dff$amenities)==T)] = 1
+
+dff$iron = 0
+dff$iron[which(grepl("Iron", dff$amenities)==T)] = 1
+
+dff$hair = 0
+dff$hair[which(grepl("Hair dryer", dff$amenities)==T)] = 1
+
+dff$Free_parking_on_premises = 0
+dff$Free_parking_on_premises[which(grepl("Free parking on premises", dff$amenities)==T)] = 1
+
+dff$washer = 0
+dff$washer[which(grepl("Washer", dff$amenities)==T)] = 1
+
+dff$dryer = 0
+dff$dryer[which(grepl("Dryer", dff$amenities)==T)] = 1
+
+dff$shampoo = 0
+dff$shampoo[which(grepl("Shampoo", dff$amenities)==T)] = 1
+
+dff$Laptop_workspace= 0
+dff$Laptop_workspace[which(grepl("Laptop friendly workspace", dff$amenities)==T)] = 1
+
+dff$heat = 0
+dff$heat[which(grepl("Heating", dff$amenities)==T)] = 1
+
+dff$Hot_water= 0
+dff$Hot_water[which(grepl("Hot water", dff$amenities)==T)] = 1
+
+dff$Fire_extinguisher= 0
+dff$Fire_extinguisher[which(grepl("Fire extinguisher", dff$amenities)==T)] = 1
+
+dff$Pool = 0
+dff$Pool[which(grepl("Pool", dff$amenities)==T)] = 1
+
+dff$fridge = 0
+dff$fridge[which(grepl("Refrigerator", dff$amenities)==T)] = 1
+
+dff$Microwave= 0
+dff$Microwave[which(grepl("Microwave", dff$amenities)==T)] = 1
+
+dff$co = 0
+dff$co[which(grepl("Carbon monoxide detector", dff$amenities)==T)] = 1
+
+dff$Coffee_maker= 0
+dff$Coffee_maker[which(grepl("Coffee maker", dff$amenities)==T)] = 1
+
+dff$dishes= 0
+dff$dishes[which(grepl("Dishes and silverware", dff$amenities)==T)] = 1
+
+dff$elevator = 0
+dff$elevator[which(grepl("Elevator", dff$amenities)==T)] = 1
+
+dff$cable_tv = 0
+dff$cable_tv[which(grepl("Cable TV", dff$amenities)==T)]= 1
+
+dff$gym = 0
+dff$gym[which(grepl("Gym", dff$amenities)==T)] = 1
+
+dff$self_check = 0
+dff$self_check[which(grepl("Self check-in", dff$amenities)==T)] = 1
+
+dff$smart = 0
+dff$smart[which(grepl("Smart lock", dff$amenities)==T)] = 1
+
+dff$aid = 0
+dff$aid[which(grepl("First aid kit", dff$amenities)==T)] = 1
+
+dff$Private_entrance = 0
+dff$Private_entrance[which(grepl("Private entrance", dff$amenities)==T)] = 1
+
+dff$Pets_allowed = 0
+dff$Pets_allowed[which(grepl("Pets allowed", dff$amenities)==T)] = 1
+
+dff$family = 0
+dff$family[which(grepl("Family/kid friendly", dff$amenities)==T)] = 1
+
+dff$wheelchair = 0
+dff$wheelchair[which(grepl("Wheelchair accessible", dff$amenities)==T)] = 1
+
+dff$indoorfireplace = 0
+dff$indoorfireplace[which(grepl("Indoor fireplace", dff$amenities)==T)] = 1
+
+dff$Breakfast = 0
+dff$Breakfast[which(grepl("Breakfast", dff$amenities)==T)] = 1
+
+dff$longterm = 0
+dff$longterm[which(grepl("Long term stays allowed", dff$amenities)==T)] = 1
+
+dff$cleaning_before_leaving = 0
+dff$cleaning_before_leaving[which(grepl("Cleaning before checkout", dff$amenities)==T)] = 1
+
+dff$extra1= 0
+dff$extra1[which(grepl("Extra pillows and blankets", dff$amenities)==T)] = 1
+
+dff$Lock= 0
+dff$Lock[which(grepl("Lock on bedroom door", dff$amenities)==T)] = 1
+
+dff$Lockbox= 0
+dff$Lockbox[which(grepl("Lockbox", dff$amenities)==T)] = 1
+
+dff$checkin= 0
+dff$checkin[which(grepl("24-hour check-in", dff$amenities)==T)] = 1
+
+dff$host= 0
+dff$host[which(grepl("Host greets you", dff$amenities)==T)] = 1
+
+dff$Dishwasher= 0
+dff$Dishwasher[which(grepl("Dishwasher", dff$amenities)==T)] = 1
+
+dff$park1= 0
+dff$park1[which(grepl("Free street parking", dff$amenities)==T)] = 1
+
+dff$Beachfront = 0
+dff$Beachfront[which(grepl("Beachfront", dff$amenities)==T)] = 1
+
+dff$BBQ_grill = 0
+dff$BBQ_grill[which(grepl("BBQ grill", dff$amenities)==T)] = 1
+
+#Building staff
+dff$Building_staff = 0
+dff$Building_staff[which(grepl("Building staff", dff$amenities)==T)] = 1
+
+#Beach essentials
+dff$Beach_essentials = 0
+dff$Beach_essentials[which(grepl("Beach essentials", dff$amenities)==T)] = 1
+
+#No stairs or steps to enter
+dff$no_stairs_steps = 0
+dff$no_stairs_steps[which(grepl("No stairs or steps to enter", dff$amenities)==T)] = 1
+
+#paid parking on premises
+dff$paid_parking_on_premises = 0
+dff$paid_parking_on_premises[which(grepl("Paid parking on premises", dff$amenities)==T)] = 1
+
+#luggage dropoff allowed
+dff$luggage_dropoff_allowed = 0
+dff$luggage_dropoff_allowed[which(grepl("Luggage dropoff allowed", dff$amenities)==T)] = 1
+
+#Bed linens
+dff$Bed_linens = 0
+dff$Bed_linens[which(grepl("Bed linens", dff$amenities)==T)] = 1
+
+#Stove
+dff$Stove = 0
+dff$Stove[which(grepl("Stove", dff$amenities)==T)] = 1
+
+#Cooking basics
+dff$Cooking_basics = 0
+dff$Cooking_basics[which(grepl("Cooking basics", dff$amenities)==T)] = 1
+
+#Garden or backyard
+dff$Garden_backyard = 0
+dff$Garden_backyard[which(grepl("Garden or backyard", dff$amenities)==T)] = 1
+
+#Oven
+dff$Oven = 0
+dff$Oven[which(grepl("Oven", dff$amenities)==T)] = 1
+
+
+```
+
+
+```{r}
+dft$longterm = 0
+dft$longterm[which(grepl("Long term stays allowed", dft$amenities)==T)] = 1
+
+dft$cleaning_before_leaving = 0
+dft$cleaning_before_leaving[which(grepl("Cleaning before checkout", dft$amenities)==T)] = 1
+
+dft$dishes = 0
+dft$dishes[which(grepl("Dishes and silverware", dft$amenities)==T)] = 1
+
+dft$extra1 = 0
+dft$extra1[which(grepl("Extra pillows and blankets", dft$amenities)==T)] = 1
+
+dft$Hot_water = 0
+dft$Hot_water[which(grepl("Hot water", dft$amenities)==T)] = 1
+
+dft$Lock = 0
+dft$Lock[which(grepl("Lock on bedroom door", dft$amenities)==T)] = 1
+
+dft$Lockbox = 0
+dft$Lockbox[which(grepl("Lockbox", dft$amenities)==T)] = 1
+
+dft$Microwave = 0
+dft$Microwave[which(grepl("Microwave", dft$amenities)==T)] = 1
+
+dft$Coffee_maker = 0
+dft$Coffee_maker[which(grepl("Coffee maker", dft$amenities)==T)] = 1
+
+dft$checkin = 0
+dft$checkin[which(grepl("24-hour check-in", dft$amenities)==T)] = 1
+
+dft$Dishwasher = 0
+dft$Dishwasher[which(grepl("Dishwasher", dft$amenities)==T)] = 1
+
+dft$Fire_extinguisher = 0
+dft$Fire_extinguisher[which(grepl("Fire extinguisher", dft$amenities)==T)] = 1
+
+dft$hot_water = 0
+dft$hot_water[which(grepl("Hot Water", dft$amenities)==T)] = 1
+
+dft$Laptop_workspace = 0
+dft$Laptop_workspace[which(grepl("Laptop friendly workspace", dft$amenities)==T)] = 1
+
+dft$host = 0
+dft$host[which(grepl("Host greets you", dft$amenities)==T)] = 1
+
+dft$park1 = 0
+dft$park1[which(grepl("Free street parking", dft$amenities)==T)] = 1
+
+dft$wifi = 0
+dft$wifi[which(grepl("Wifi", dft$amenities)==T)] = 1 
+
+dft$Internet = 0
+dft$Internet[which(grepl("Internet", dft$amenities)==T)] = 1
+
+dft$heat = 0
+dft$heat[which(grepl("Heating", dft$amenities)==T)] = 1
+
+dft$air = 0
+dft$air[which(grepl("Air conditioning", dft$amenities)==T)] = 1
+
+dft$kitchen = 0
+dft$kitchen[which(grepl("Kitchen", dft$amenities)==T)] = 1
+
+dft$shampoo = 0
+dft$shampoo[which(grepl("Shampoo", dft$amenities)==T)] = 1
+
+dft$essential = 0
+dft$essential[which(grepl("Essentials", dft$amenities)==T)] = 1
+
+dft$elevator = 0
+dft$elevator[which(grepl("Elevator", dft$amenities)==T)] = 1
+
+dft$tv = 0
+dft$tv[which(grepl("TV", dft$amenities)==T)] = 1
+
+dft$cable_tv = 0
+dft$cable_tv[which(grepl("Cable TV", dft$amenities)==T)]= 1
+
+dft$gym = 0
+dft$gym[which(grepl("Gym", dft$amenities)==T)] = 1
+
+dft$washer = 0
+dft$washer[which(grepl("Washer", dft$amenities)==T)] = 1
+
+dft$dryer = 0
+dft$dryer[which(grepl("Dryer", dft$amenities)==T)] = 1
+
+dft$fridge = 0
+dft$fridge[which(grepl("Refrigerator", dft$amenities)==T)] = 1
+
+dft$self_check = 0
+dft$self_check[which(grepl("Self check-in", dft$amenities)==T)] = 1
+
+dft$hair = 0
+dft$hair[which(grepl("Hair dryer", dft$amenities)==T)] = 1
+
+dft$smart = 0
+dft$smart[which(grepl("Smart lock", dft$amenities)==T)] = 1
+
+dft$aid = 0
+dft$aid[which(grepl("First aid kit", dft$amenities)==T)] = 1
+
+dft$hanger = 0
+dft$hanger[which(grepl("Hangers", dft$amenities)==T)] = 1
+
+dft$co = 0
+dft$co[which(grepl("Carbon monoxide detector", dft$amenities)==T)] = 1
+
+dft$Pool = 0
+dft$Pool[which(grepl("Pool", dft$amenities)==T)] = 1
+
+dft$Smoke_detector = 0
+dft$Smoke_detector[which(grepl("Smoke detector", dft$amenities)==T)] = 1
+
+dft$Free_parking_on_premises = 0
+dft$Free_parking_on_premises[which(grepl("Free parking on premises", dft$amenities)==T)] = 1
+
+dft$Private_entrance = 0
+dft$Private_entrance[which(grepl("Private entrance", dft$amenities)==T)] = 1
+
+dft$Pets_allowed = 0
+dft$Pets_allowed[which(grepl("Pets allowed", dft$amenities)==T)] = 1
+
+dft$family = 0
+dft$family[which(grepl("Family/kid friendly", dft$amenities)==T)] = 1
+
+dft$wheelchair = 0
+dft$wheelchair[which(grepl("Wheelchair accessible", dft$amenities)==T)] = 1
+
+dft$indoorfireplace = 0
+dft$indoorfireplace[which(grepl("Indoor fireplace", dft$amenities)==T)] = 1
+
+dft$Breakfast = 0
+dft$Breakfast[which(grepl("Breakfast", dft$amenities)==T)] = 1
+
+dft$Beachfront = 0
+dft$Beachfront[which(grepl("Beachfront", dft$amenities)==T)] = 1
+
+dft$Building_staff = 0
+dft$Building_staff[which(grepl("Building staff", dft$amenities)==T)] = 1
+
+dft$Garden_backyard = 0
+dft$Garden_backyard[which(grepl("Garden or backyard", dft$amenities)==T)] = 1
+
+dft$Oven = 0
+dft$Oven[which(grepl("Oven", dft$amenities)==T)] = 1
+
+dft$Cooking_basics = 0
+dft$Cooking_basics[which(grepl("Cooking basics", dft$amenities)==T)] = 1
+
+dft$Stove = 0
+dft$Stove[which(grepl("Stove", dft$amenities)==T)] = 1
+
+dft$Bed_linens = 0
+dft$Bed_linens[which(grepl("Bed linens", dft$amenities)==T)] = 1
+
+dft$luggage_dropoff_allowed = 0
+dft$luggage_dropoff_allowed[which(grepl("Luggage dropoff allowed", dft$amenities)==T)] = 1
+
+dft$paid_parking_on_premises = 0
+dft$paid_parking_on_premises[which(grepl("Paid parking on premises", dft$amenities)==T)] = 1
+
+dft$no_stairs_steps = 0
+dft$no_stairs_steps[which(grepl("No stairs or steps to enter", dft$amenities)==T)] = 1
+
+dft$Beach_essentials = 0
+dft$Beach_essentials[which(grepl("Beach essentials", dft$amenities)==T)] = 1
+
+dft$BBQ_grill = 0
+dft$BBQ_grill[which(grepl("BBQ grill", dft$amenities)==T)] = 1
+
+```
+
+We treated the host_verifications feature in a similar manner.
+For example, if a listing’s host was verified because he/she had reviews, the value would be 1 for that column, and if the listing’s host was not verified through a review, the value would be 0 for that column.
+
+```{r}
+
+# Different factors in host_verifications variable such as email, reviews, etc are transformed individual columns 
+
+dff$sent_id = 0
+dff$sent_id[which(grepl("sent_id", dff$host_verifications)==T)] = 1 
+dff$manual_offline = 0
+dff$manual_offline[which(grepl("manual_offline", dff$host_verifications)==T)] = 1 
+
+
+dff$email = 0
+dff$email[which(grepl("email", dff$host_verifications)==T)] = 1
+dff$facebook = 0
+dff$facebook[which(grepl("facebook", dff$host_verifications)==T)] = 1
+dff$google = 0
+dff$google[which(grepl("google", dff$host_verifications)==T)] = 1
+dff$reviews = 0
+dff$reviews[which(grepl("reviews", dff$host_verifications)==T)] = 1
+
+dff$phone = 0
+dff$phone[which(grepl("phone", dff$host_verifications)==T)] = 1
+
+dff$jumio = 0
+dff$jumio[which(grepl("jumio", dff$host_verifications)==T)] = 1
+
+dff$offline_government_id = 0
+dff$offline_government_id[which(grepl("offline_government_id", dff$host_verifications)==T)] = 1
+
+dff$kba = 0
+dff$kba[which(grepl("kba", dff$host_verifications)==T)] = 1
+
+dff$selfie = 0
+dff$selfie[which(grepl("selfie", dff$host_verifications)==T)] = 1
+
+dff$government_id = 0
+dff$government_id[which(grepl("government_id", dff$host_verifications)==T)] = 1
+
+dff$identity_manual = 0
+dff$identity_manual[which(grepl("identity_manual", dff$host_verifications)==T)] = 1
+dff$nothing = 0
+dff$nothing[which(grepl(" ", dff$host_verifications)==T)]  =1
+dff$NONE = 0
+dff$nothing[which(grepl("None", dff$host_verifications)==T)]  =1
+
+```
+
+
+```{r}
+# Data Cleaning
+
+# Different factors in host_verifications variable such as email, reviews, etc are transformed individual columns 
+
+
+dft$sent_id = 0
+dft$sent_id[which(grepl("sent_id", dft$host_verifications)==T)] = 1 
+dft$manual_offline = 0
+dft$manual_offline[which(grepl("manual_offline", dft$host_verifications)==T)] = 1 
+
+dft$email = 0
+dft$email[which(grepl("email", dft$host_verifications)==T)] = 1
+dft$facebook = 0
+dft$facebook[which(grepl("facebook", dft$host_verifications)==T)] = 1
+dft$google = 0
+dft$google[which(grepl("google", dft$host_verifications)==T)] = 1
+dft$phone = 0
+dft$phone[which(grepl("phone", dft$host_verifications)==T)] = 1
+dft$reviews = 0
+dft$reviews[which(grepl("reviews", dft$host_verifications)==T)] = 1
+dft$nothing = 0
+dft$nothing[which(grepl(" ", dft$host_verifications)==T)] =1
+dft$NONE = 0
+dft$nothing[which(grepl("None", dft$host_verifications)==T)]  =1
+# | (grepl("None", dft$host_verifications)%in%T)
+dft$jumio = 0
+dft$jumio[which(grepl("jumio", dft$host_verifications)==T)] = 1
+
+dft$offline_government_id = 0
+dft$offline_government_id[which(grepl("offline_government_id", dft$host_verifications)==T)] = 1
+
+dft$kba = 0
+dft$kba[which(grepl("kba", dft$host_verifications)==T)] = 1
+
+dft$selfie = 0
+dft$selfie[which(grepl("selfie", dft$host_verifications)==T)] = 1
+
+dft$government_id = 0
+dft$government_id[which(grepl("government_id", dft$host_verifications)==T)] = 1
+
+dft$identity_manual = 0
+dft$identity_manual[which(grepl("identity_manual", dft$host_verifications)==T)] = 1
+
+
+```
+
+
+```{r}
+
+# Different factors in bed_type variable such as 'Airbed', 'Couch', etc are transformed individual columns  
+
+dff$bed_airbed = 0
+dff$bed_airbed[which(dff$bed_type=='Airbed')] = 1
+dff$bed_couch = 0
+dff$bed_couch[which(dff$bed_type=='Couch')] = 1
+dff$bed_futon = 0
+dff$bed_futon[which(dff$bed_type=='Futon')] = 1
+dff$bed_sofa = 0
+dff$bed_sofa[which(dff$bed_type=='Pull-out Sofa')] = 1
+dff$bed_real = 0
+dff$bed_real[which(dff$bed_type=='Real Bed')] = 1
+
+
+dft$bed_airbed = 0
+dft$bed_airbed[which(dft$bed_type=='Airbed')] = 1
+dft$bed_couch = 0
+dft$bed_couch[which(dft$bed_type=='Couch')] = 1
+dft$bed_futon = 0
+dft$bed_futon[which(dft$bed_type=='Futon')] = 1
+dft$bed_sofa = 0
+dft$bed_sofa[which(dft$bed_type=='Pull-out Sofa')] = 1
+dft$bed_real = 0
+dft$bed_real[which(dft$bed_type=='Real Bed')] = 1
+```
+
+
+```{r}
+
+# Different factors in bed_type variable such as 'Private room', 'Shared room', etc are transformed individual columns 
+
+dff$room_apt=0
+dff$room_apt[which(dff$room_type=='Entire home/apt')] = 1
+dff$room_private=0
+dff$room_private[which(dff$room_type=='Private room')] = 1
+dff$room_shared=0
+dff$room_shared[which(dff$room_type=='Shared room')] = 1
+dff$hotel_room=0
+dff$hotel_room[which(dff$room_type=='Hotel room')] = 1
+
+dft$room_apt=0
+dft$room_apt[which(dft$room_type=='Entire home/apt')] = 1
+dft$room_private=0
+dft$room_private[which(dft$room_type=='Private room')] = 1
+dft$room_shared=0
+dft$room_shared[which(dft$room_type=='Shared room')] = 1
+dft$hotel_room=0
+dft$hotel_room[which(dft$room_type=='Hotel room')] = 1
+```
