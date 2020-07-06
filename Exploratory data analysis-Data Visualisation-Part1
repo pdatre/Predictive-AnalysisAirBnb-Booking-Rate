@@ -80,3 +80,62 @@ plotDV2 <- ggplot(myFrame4, aes(x=Var1,y= Freq)) +
    geom_bar(stat="identity" ,  fill = "#FF6666") + labs(title="Bar chart of listings against Room Types", x="Room Type" , y="Frequency") 
 plotDV2 + coord_flip()
 ```
+#Data Visualisation Part Two :
+#Basic Data Visualisations to understand data better 
+#variables are used from the orginal Kaggle dataset
+#variables contain missing values 
+#libraries used ggplotly2
+```
+
+```{r}
+
+original <-  dff %>% select("cleaning_fee","price", "maximum_nights","minimum_nights", "security_deposit", "host_is_superhost", "host_listings_count","host_response_rate"  )
+
+missing.values <- original %>%
+    gather(key = "key", value = "val") %>%
+    mutate(is.missing = is.na(val)) %>%
+    group_by(key, is.missing) %>%
+    summarise(num.missing = n()) %>%
+    filter(is.missing==T) %>%
+    select(-is.missing) %>%
+    arrange(desc(num.missing)) 
+
+#Plot 13: Count of missing values
+#plot13
+plot13 = missing.values %>%
+  ggplot() +
+    geom_bar(aes(x=key, y=num.missing), stat = 'identity', fill = "#FF6666") + 
+    labs(x='variable', y="number of missing values", title='Number of missing values') + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+#Plot 14: Proportion of missing values
+#plot14
+plot14 = 
+missing.values3 <- original %>%
+  gather(key = "key", value = "val") %>%
+  mutate(isna = is.na(val)) %>%
+  group_by(key) %>%
+  mutate(total = n()) %>%
+  group_by(key, total, isna) %>%
+  summarise(num.isna = n()) %>%
+  mutate(pct = num.isna / total * 100)
+
+
+levels <-
+    (missing.values3  %>% filter(isna == T) %>% arrange(desc(pct)))$key
+
+percentage.plot <- missing.values3 %>%
+      ggplot() +
+        geom_bar(aes(x = reorder(key, desc(pct)), 
+                     y = pct, fill=isna), 
+                 stat = 'identity', alpha=0.8) +
+      scale_x_discrete(limits = levels) +
+      scale_fill_manual(name = "", 
+                        values = c('steelblue', 'tomato3'), labels = c("Present", "Missing")) +
+      coord_flip() +
+      labs(title = "Percentage of missing values", x =
+             'Variable', y = "% of missing values")
+
+percentage.plot
+
+```
