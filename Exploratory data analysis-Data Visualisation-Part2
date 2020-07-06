@@ -1,5 +1,5 @@
 ```{r}
-#Data Visualisation Part Two :
+#Data Visualisation Part Three :
 #Basic Data Visualisations to understand data better 
 #variables are used from the orginal Kaggle dataset
 #variables contain missing values and/or outliers
@@ -40,7 +40,7 @@ plotDV4
 
 
 ```{r}
-#Data Visualisation Part Three :
+#Data Visualisation Part Four :
 #Basic Data Visualisations to understand data better 
 #variables are used from the original Kaggle dataset
 #variables are categories
@@ -87,7 +87,7 @@ plotDV5 + coord_flip()
 ```
 
 ```{r}
-#Data Visualisation Part Four :
+#Data Visualisation Part Five :
 #Basic Data Visualisations to understand data better 
 #variables are used from the orginal Kaggle dataset
 #variables contain missing values and are skewed
