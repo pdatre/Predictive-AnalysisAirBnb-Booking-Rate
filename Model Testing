@@ -1,0 +1,216 @@
+
+**************************
+#STEP III
+**************************
+
+
+```{r} 
+#Setting the seed
+set.seed(333)
+
+#Creating the training dataset by random sampling 80% of the data
+dffairbnbTrain <- dff %>% sample_frac(.8)
+
+#Assigning the difference to the test set
+dffairbnbTest <- dplyr::setdiff(dff, dffairbnbTrain)
+```
+
+```{r}
+memory.limit()
+ memory.limit(size=110000)
+
+```
+
+```{r}
+dffairbnbTrain
+```
+
+
+
+```{r}
+# Logistic Model 
+newmodel_8 <-
+	glm(formula=high_booking_rate ~   minimum_nights+maximum_nights+log1p(price)+log1p(security_deposit)+instant_bookable +  self_check + kitchen+ elevator +heat+Beachfront + family+ Pets_allowed+reviews+ host_is_superhost+cleaning_fee+host_listings_count+checkin+Microwave+host_response_rate+cleaning_before_leaving+wheelchair+room_shared+room_private+room_apt+hotel_room+prop_town+prop_condo+prop_house+prop_apt,family='binomial', data=dffairbnbTrain) %>%
+	predict(dffairbnbTest, type = "response") %>%	  
+	bind_cols(dffairbnbTest, predictedProb=.) %>% 	 
+	mutate(predictedHighBookingRate = as.factor(ifelse(predictedProb > 0.28,1,0)))
+```
+
+
+```{r}
+newmodel_8
+```
+
+
+```{r}
+# to check importance of variables
+
+Logistic <-
+  glm(formula = high_booking_rate ~   minimum_nights+maximum_nights+log1p(price)+log1p(security_deposit)+instant_bookable +  self_check + kitchen+ elevator +heat+Beachfront + family+reviews+ host_is_superhost+cleaning_fee+host_listings_count+checkin+Microwave+host_response_rate+cleaning_before_leaving+wheelchair + room_shared + room_private + hotel_room + room_apt + prop_town+prop_condo+prop_house+prop_apt,family='binomial', data=dffairbnbTrain)
+```
+
+
+```{r}
+
+summary(Logistic)
+
+
+```
+
+#Recommendation
+From the above model we can see that shared room, private room and Hotel Room are important factor in high booking rate with private room and hotel room having more significance.
+Looking from the property type aspect we can see that property type townhouse and condo are very important property types  for investors in miami with important amenities such as beachfront, kitchen , elevator and self checkin amenities required to get a high booking rate.
+
+```{r}
+
+```
+
+
+```{r}
+newmodel_9 <-
+	glm(formula=high_booking_rate ~   minimum_nights+maximum_nights+log1p(price)+log1p(security_deposit)+instant_bookable +  self_check + kitchen+ elevator +heat+Beachfront + family+ Pets_allowed+reviews+ host_is_superhost+cleaning_fee+host_listings_count+checkin+Microwave+host_response_rate+cleaning_before_leaving+wheelchair+room_shared+room_private+hotel_room+prop_town+prop_condo,family='binomial', data=dffairbnbTrain) %>%
+	predict(dffairbnbTest, type = "response") %>%	  
+	bind_cols(dffairbnbTest, predictedProb=.) %>% 	 
+	mutate(predictedHighBookingRate = as.factor(ifelse(predictedProb > 0.28,1,0)))
+```
+
+
+
+```{r}
+
+# Confusion matrix For Logistic Model
+newmodel_9 %>%
+  xtabs(~predictedHighBookingRate+high_booking_rate, .)%>%
+  confusionMatrix(positive='1')
+
+
+
+```
+
+
+
+```{r}
+
+# Method - lda
+
+set.seed(123)
+fitLdaCV <- train(as.factor(high_booking_rate)~   minimum_nights+maximum_nights+log1p(price)+log1p(security_deposit)+instant_bookable +  self_check + kitchen+ elevator +heat+Beachfront + family+ Pets_allowed+reviews+ host_is_superhost+cleaning_fee+host_listings_count+checkin+Microwave+host_response_rate+cleaning_before_leaving+wheelchair+availability_365 , family='binomial', data=dffairbnbTrain, method='lda', trControl=trainControl(method='cv', number=10))
+```
+
+
+
+```{r}
+#variable immportance for LDA model
+summary(fitLdaCV)
+```
+
+
+```{r}
+
+resultsLda <- fitLdaCV %>% predict(dffairbnbTest,type="raw") %>% bind_cols(dffairbnbTest, predictedClass=.)
+```
+
+
+```{r}
+
+# finding confusion Matrix for LDA
+resultsLda %>% 
+ xtabs(~predictedClass+high_booking_rate,.) %>% 
+ confusionMatrix(positive = "1")
+
+```
+
+
+```{r}
+#qda model
+
+fitqdaCV <- train(as.factor(high_booking_rate)~   minimum_nights+maximum_nights+log1p(price)+log1p(security_deposit)+instant_bookable +  self_check + kitchen+ elevator +heat+Beachfront + family+ Pets_allowed+reviews+ host_is_superhost+cleaning_fee+host_listings_count+checkin+Microwave+host_response_rate+cleaning_before_leaving+wheelchair+availability_365 , family='binomial', data=dffairbnbTrain, method='qda', trControl=trainControl(method='cv', number=10))
+
+```
+
+```{r}
+#variable importance
+summary(fitqdaCV)
+
+```
+
+```{r}
+# results
+resultsqda <- fitqdaCV %>% predict(dffairbnbTest,type="raw") %>%
+	bind_cols(dffairbnbTest, predictedClass=.)
+
+```
+
+```{r}
+#finding confusion matrix for QDA
+resultsqda %>% 
+ xtabs(~predictedClass+high_booking_rate,.) %>% 
+ confusionMatrix(positive = "1")
+
+```
+
+
+
+
+
+**************************
+#STEP IV
+#Here, we are trying to show importance of diffrent variables in accordance with host_is_superhost
+**************************
+
+```{r}
+#plot 9
+#sort by decreasing correlations with host_is_superhost
+cor_sorted <- as.matrix(sort(cor_numVar[,'host_is_superhost'], decreasing = TRUE))
+ #select only high correlations
+CorHigh <- names(which(apply(cor_sorted, 1, function(x) abs(x)>0.1)))
+cor_numVar <- cor_numVar[CorHigh, CorHigh]
+
+corrplot.mixed(cor_numVar, tl.col="black", tl.pos = "lt", tl.cex = 0.7,cl.cex = .7, number.cex=.7)
+```
+```{r}
+frmla1 = host_is_superhost~ Coffee_maker+
+dishes+
+fridge+
+Hot_water+
+Microwave+
+self_check+
+extra1+
+Cooking_basics+
+Bed_linens+
+park1+
+luggage_dropoff_allowed
+```
+
+
+```{r}
+library(car)
+```
+
+```{r}
+#model to see explanatory variables and importance related to host_is_superhost
+
+hstisshst <-  lm(frmla1, data = dff)
+```
+
+```{r}
+vif(hstisshst)
+```
+
+```{r}
+summary(hstisshst)
+```
+
+```{r}
+#Even though, airbnb have their own agenda for selecting a superhost, here are some hidden correlations from our insights between diffrent variables and host_is_superhost which can be effective for host to become a superhost or stand out when it comes to high booking rate
+
+var_imp <- varImp(hstisshst, scale = FALSE)
+  #arrange(desc())
+  
+var_imp
+```
+# importance of host is superhost
+
+Even though Airbnb has mentioned certail set of guidelines on their website for the host to become superhost but here are somme of the amenities which helps in making host a super host such as coffee maker, dishes , fridge , hot water , microwave , self checkin , cooking basics, bed lines which can see seen from the importance of the variables.
+
+*******************************
