@@ -1,0 +1,62 @@
+**************************
+#STEP I 
+**************************
+
+```{r}
+
+#Loading the necessary libraries before proceeding 
+library("tidyverse")
+library("tidymodels")
+library("plotly")
+library("skimr")
+library("caret")
+library("ggplot2")
+library("gridExtra")
+library("VIM")
+```
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE, comment = NA, fig.align = 'center') # center aligning figure outputs
+```
+**Data Description**
+
+i) Data Source Information
+Kaggle : https://www.kaggle.com/c/predict/data
+ii) Sample Information
+Total Variables : 66
+Sample Size :  Train Data Set- 6195 rows Test Data Set- 2065 rows
+
+![Sample data](C:\Users\mihir\Desktop\spring20\DMProject\samp.PNG)
+
+![Variable type information](C:\Users\mihir\Desktop\spring20\DMProject\var1.PNG)
+
+![Variables1](C:\Users\mihir\Desktop\spring20\DMProject\var2.PNG)
+
+![Variables2](C:\Users\mihir\Desktop\spring20\DMProject\var3.PNG)
+
+```{r}
+##Loading the respective train and test files
+#dff is assigned Train Dataset from Kaggle
+#dft is assigned Test Dataset from Kaggle
+#dff <- read_csv("C:/Users/13017/Desktop/r/airbnbTrain.csv/airbnbTrain.csv")
+#dft <- read_csv("C:/Users/13017/Desktop/r/airbnbTest.csv/airbnbTest.csv")
+setwd("C:/Users/mihir/Desktop/spring20/DMProject")
+dff <- read_csv("airbnbTrain.csv")
+dft <- read_csv("airbnbTest.csv")
+
+```
+
+```{r}
+#Our project focuses on Miami city and we will be filtering the total data (including Train and Test) to the subset of each containing Miami
+```
+
+
+```{r}
+#Filtering both Train and Test Dataset for Miami City using randomControl variable
+dff <- 
+  dplyr::filter(dff, grepl('^113', `{randomControl}`))
+
+dft <- 
+  dplyr::filter(dft, grepl('^113', `{randomControl}`))
+
+```
