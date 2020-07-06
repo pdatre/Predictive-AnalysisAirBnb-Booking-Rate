@@ -29,17 +29,6 @@ Guidelines:
 Master Script is to be run once per session.
 To check any model, the entire script is to be run.
 
-Instructions for running R Scripts:
-
-Place all data files and r scripts in one folder.
-Open Master.R in RStudio.
-Set the Working Directory to Source File.
-Run Master.R script. 
-Open a script for the regression model desired.
-Library loading commands are redundant if you are in the same session.
-Run script.
-Once run, view plots generated in the plot window.
-
 Data Description :
 In total we had 66 variables.
 Training dataset: 6195 rows.
