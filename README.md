@@ -28,6 +28,13 @@ Guidelines:
 
 Master Script is to be run once per session.
 To check any model, the entire script is to be run.
+Scripts to be run in order of :
+First: Loading the Data
+Second: Exploratory data analysis-Data Visualisation-Part1
+Third: Data Preprocessing and Data Cleaning
+Fourth: Exploratory data analysis-Data Visualisation-Part2
+Fifth: Model Testing
+Sixth: Conclusion
 
 Data Description :
 In total we had 66 variables.
