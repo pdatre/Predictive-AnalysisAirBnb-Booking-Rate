@@ -62,30 +62,12 @@ From the above model we can see that shared room, private room and Hotel Room ar
 Looking from the property type aspect we can see that property type townhouse and condo are very important property types  for investors in miami with important amenities such as beachfront, kitchen , elevator and self checkin amenities required to get a high booking rate.
 
 ```{r}
-
-```
-
-
-```{r}
-newmodel_9 <-
-	glm(formula=high_booking_rate ~   minimum_nights+maximum_nights+log1p(price)+log1p(security_deposit)+instant_bookable +  self_check + kitchen+ elevator +heat+Beachfront + family+ Pets_allowed+reviews+ host_is_superhost+cleaning_fee+host_listings_count+checkin+Microwave+host_response_rate+cleaning_before_leaving+wheelchair+room_shared+room_private+hotel_room+prop_town+prop_condo,family='binomial', data=dffairbnbTrain) %>%
-	predict(dffairbnbTest, type = "response") %>%	  
-	bind_cols(dffairbnbTest, predictedProb=.) %>% 	 
-	mutate(predictedHighBookingRate = as.factor(ifelse(predictedProb > 0.28,1,0)))
-```
-
-
-
-```{r}
-
 # Confusion matrix For Logistic Model
-newmodel_9 %>%
+newmodel_8 %>%
   xtabs(~predictedHighBookingRate+high_booking_rate, .)%>%
   confusionMatrix(positive='1')
-
-
-
 ```
+
 
 
 
