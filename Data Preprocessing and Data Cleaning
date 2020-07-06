@@ -837,3 +837,145 @@ dft$room_shared[which(dft$room_type=='Shared room')] = 1
 dft$hotel_room=0
 dft$hotel_room[which(dft$room_type=='Hotel room')] = 1
 ```
+```{r}
+#Convert the charcaters into numeric values.
+#For is_location_exact variable, convert 'False' to 0 and 'True' to 1
+
+
+dft$is_location_exact[which(dft$is_location_exact=='False')] = 0
+dft$is_location_exact[which(dft$is_location_exact=='True')] = 1
+
+# Conversion of is_location_exact in numeric
+dft$is_location_exact = as.numeric(dft$is_location_exact)
+```
+
+
+```{r}
+
+#Convert the charcaters into numeric values.
+#For is_location_exact variable, convert 'f' to 0 and 't' to 1
+
+#skim(dft$instant_bookable)
+dft$instant_bookable[which(dft$instant_bookable=='f')] = 0
+dft$instant_bookable[which(dft$instant_bookable=='t')] = 1
+
+# Conversion of instant_bookable in numeric
+dft$instant_bookable = as.numeric(dft$instant_bookable)
+```
+
+
+
+```{r}
+#Convert the characters into numeric values.
+#For property_type variable, convert 'Apartment' to 1 and rest to 0
+
+
+dft$property_type[which(dft$property_type=='Apartment')] = 1
+dft$property_type[which(dft$property_type!=1)] = 0
+
+# Conversion of property_type in numeric
+dft$property_type = as.numeric(dft$property_type)
+```
+
+```{r}
+#Convert the charcaters into numeric values.
+#For is_business_travel_ready variable, convert 'f' to 0 and 't' to 1 
+dff$is_business_travel_ready[which(dff$is_business_travel_ready=='t')] = 1
+dff$is_business_travel_ready[which(dff$is_business_travel_ready=='f')] = 0
+
+dft$is_business_travel_ready[which(dft$is_business_travel_ready=='t')] = 1
+dft$is_business_travel_ready[which(dft$is_business_travel_ready=='f')] = 0
+
+# Conversion of is_business_travel_ready in numeric
+dff$is_business_travel_ready = as.numeric(dff$is_business_travel_ready)
+dft$is_business_travel_ready = as.numeric(dft$is_business_travel_ready)
+```
+
+
+```{r}
+#Convert the charcaters into numeric values.
+#For transit variable, convert '' to 0 and rest to 1 
+dff$transit[which(dff$transit=='')] = 0
+dff$transit[which(dff$transit!=0)] = 1
+dft$transit[which(dft$transit=='')] = 0
+dft$transit[which(dft$transit!=0)] = 1
+
+# Conversion of transit in numeric
+dff$transit = as.numeric(dff$transit)
+dft$transit = as.numeric(dft$transit)
+```
+
+```{r}
+#Convert the charcaters into numeric values.
+#For access variable, convert '' to 0 and rest to 1 
+dff$access[which(dff$access=='')] = 0
+dff$access[which(dff$access!=0)] = 1
+dft$access[which(dft$access=='')] = 0
+dft$access[which(dft$access!=0)] = 1
+
+# Conversion of access in numeric
+dff$access = as.numeric(dff$access)
+dft$access = as.numeric(dft$access)
+```
+
+```{r}
+
+#Convert the charcaters into numeric values.
+#For cancellation_policy variable, convert factors such as 'flexible', 'moderate' ,etc. 
+dft$cancellation_policy[which(dft$cancellation_policy=='flexible')] = 1
+dft$cancellation_policy[which(dft$cancellation_policy=='moderate')] = 2
+dft$cancellation_policy[which(dft$cancellation_policy=='strict')] = 3
+dft$cancellation_policy[which(dft$cancellation_policy=='super_strict_30')] = 4
+dft$cancellation_policy[which(dft$cancellation_policy=='super_strict_60')] = 4
+dft$cancellation_policy[which(dft$cancellation_policy=="strict_14_with_grace_period")] = 3
+dft$cancellation_policy[which(dft$cancellation_policy=='luxury_moderate')] = 2
+dft$cancellation_policy[which(dft$cancellation_policy=='luxury_super_strict_95')] = 3
+dft$cancellation_policy[which(dft$cancellation_policy=='luxury_super_strict_125')] = 2
+dft$cancellation_policy[which(dft$cancellation_policy=='luxury_no_refund')] = 3
+# Conversion of transit in numeric
+#as.numeric(as.factor(dft$cancellation_policy))
+
+```
+
+```{r}
+
+# Different factors in host_response_time variable such as 'N/A', 'a few days more', etc are transformed individual columns  
+
+dft$host_response_time[which(dft$host_response_time=='a few days or more')] = 1
+dft$host_response_time[which(dft$host_response_time=='N/A')] = 0
+dft$host_response_time[which(dft$host_response_time=='within a day')] = 3
+dft$host_response_time[which(dft$host_response_time=='within a few hours')] = 6
+dft$host_response_time[which(dft$host_response_time=='within an hour')] = 10
+
+# Converting N/A's into 0
+dft$host_response_time[is.na(dft$host_response_time)] = 0
+
+#as.numeric(as.factor(dft$host_response_time))
+
+```
+
+```{r}
+dft$host_is_superhost[which(dft$host_is_superhost=='FALSE')] = 0
+dft$host_is_superhost[which(dft$host_is_superhost=='TRUE')] = 1
+#dft$host_is_superhost
+#Nas could be converted to 0 or 1 , cant take this decision.
+dft$host_is_superhost = as.numeric(dft$host_is_superhost)
+#skim(dft$host_is_superhost)
+#missing values still exist
+
+```
+
+```{r}
+
+
+dff$host_response_rate = sub("%", "", dff$host_response_rate)
+dft$host_response_rate = sub("%", "", dft$host_response_rate)
+
+dff$host_response_rate=as.numeric(dff$host_response_rate)
+dft$host_response_rate=as.numeric(dft$host_response_rate)
+
+dff$host_response_rate[which(is.na(dff$host_response_rate))] = median(dff$host_response_rate,na.rm=T)
+dft$host_response_rate[which(is.na(dft$host_response_rate))] = median(dft$host_response_rate,na.rm=T)
+
+
+```
